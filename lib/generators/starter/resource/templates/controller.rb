@@ -19,6 +19,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
 
   def create
     @<%= singular_name.underscore %> = <%= class_name %>.new
+
 <% attributes.each do |attribute| -%>
     @<%= singular_name.underscore %>.<%= attribute.name %> = params[:<%= attribute.name %>]
 <% end -%>
@@ -30,7 +31,9 @@ class <%= plural_name.camelize %>Controller < ApplicationController
       render("<%= plural_name.underscore %>/new.html.erb")
     end
 <% else -%>
-    if @<%= singular_name.underscore %>.save
+    save_status = @<%= singular_name.underscore %>.save
+
+    if save_status == true
       redirect_to :back, :notice => "<%= singular_name.humanize %> created successfully."
     else
       render("<%= plural_name.underscore %>/new.html.erb")
@@ -58,7 +61,9 @@ class <%= plural_name.camelize %>Controller < ApplicationController
       render("<%= plural_name.underscore %>/edit.html.erb")
     end
 <% else -%>
-    if @<%= singular_name.underscore %>.save
+    save_status = @<%= singular_name.underscore %>.save
+
+    if save_status == true
       redirect_to :back, :notice => "<%= singular_name.humanize %> updated successfully."
     else
       render("<%= plural_name.underscore %>/edit.html.erb")

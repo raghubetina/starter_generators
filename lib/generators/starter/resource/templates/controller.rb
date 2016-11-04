@@ -34,7 +34,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
     save_status = @<%= singular_name.underscore %>.save
 
     if save_status == true
-      redirect_to :back, :notice => "<%= singular_name.humanize %> created successfully."
+      redirect_to(:back, :notice => "<%= singular_name.humanize %> created successfully.")
     else
       render("<%= plural_name.underscore %>/new.html.erb")
     end
@@ -64,7 +64,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
     save_status = @<%= singular_name.underscore %>.save
 
     if save_status == true
-      redirect_to :back, :notice => "<%= singular_name.humanize %> updated successfully."
+      redirect_to(:back, :notice => "<%= singular_name.humanize %> updated successfully.")
     else
       render("<%= plural_name.underscore %>/edit.html.erb")
     end
@@ -76,10 +76,6 @@ class <%= plural_name.camelize %>Controller < ApplicationController
 
     @<%= singular_name.underscore %>.destroy
 
-<% if named_routes? -%>
-    redirect_to :back, :notice => "<%= singular_name.humanize %> deleted."
-<% else -%>
-    redirect_to :back, :notice => "<%= singular_name.humanize %> deleted."
-<% end -%>
+    redirect_to(:back, :notice => "<%= singular_name.humanize %> deleted.")
   end
 end

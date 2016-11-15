@@ -34,7 +34,14 @@ class <%= plural_name.camelize %>Controller < ApplicationController
     save_status = @<%= singular_name.underscore %>.save
 
     if save_status == true
-      redirect_back(:fallback_location => "/", :notice => "<%= singular_name.humanize %> created successfully.")
+      referer = URI(request.referer).path
+
+      case referer
+      when "/<%= plural_name.underscore %>/new", "/<%= plural_name.underscore %>/create"
+        redirect_to("/<%= plural_name.underscore %>")
+      else
+        redirect_back(:fallback_location => "/", :notice => "<%= singular_name.humanize %> created successfully.")
+      end
     else
       render("<%= plural_name.underscore %>/new.html.erb")
     end
@@ -64,7 +71,14 @@ class <%= plural_name.camelize %>Controller < ApplicationController
     save_status = @<%= singular_name.underscore %>.save
 
     if save_status == true
-      redirect_back(:fallback_location => "/", :notice => "<%= singular_name.humanize %> updated successfully.")
+      referer = URI(request.referer).path
+
+      case referer
+      when "/<%= plural_name.underscore %>/edit", "/<%= plural_name.underscore %>/update"
+        redirect_to("/<%= plural_name.underscore %>/#{@<%= singular_name.underscore %>.id}", :notice => "<%= singular_name.humanize %> updated successfully.")
+      else
+        redirect_back(:fallback_location => "/", :notice => "<%= singular_name.humanize %> updated successfully.")
+      end
     else
       render("<%= plural_name.underscore %>/edit.html.erb")
     end

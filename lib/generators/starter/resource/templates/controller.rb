@@ -74,7 +74,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
       referer = URI(request.referer).path
 
       case referer
-      when "/<%= plural_name.underscore %>/edit", "/update_<%= singular_name.underscore %>"
+      when "/<%= plural_name.underscore %>/#{@<%= singular_name.underscore %>.id}/edit", "/update_<%= singular_name.underscore %>"
         redirect_to("/<%= plural_name.underscore %>/#{@<%= singular_name.underscore %>.id}", :notice => "<%= singular_name.humanize %> updated successfully.")
       else
         redirect_back(:fallback_location => "/", :notice => "<%= singular_name.humanize %> updated successfully.")

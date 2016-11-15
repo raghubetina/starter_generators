@@ -37,7 +37,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
       referer = URI(request.referer).path
 
       case referer
-      when "/<%= plural_name.underscore %>/new", "/<%= plural_name.underscore %>/create"
+      when "/<%= plural_name.underscore %>/new", "/create_<%= singular_name.underscore %>"
         redirect_to("/<%= plural_name.underscore %>")
       else
         redirect_back(:fallback_location => "/", :notice => "<%= singular_name.humanize %> created successfully.")
@@ -74,7 +74,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
       referer = URI(request.referer).path
 
       case referer
-      when "/<%= plural_name.underscore %>/edit", "/<%= plural_name.underscore %>/update"
+      when "/<%= plural_name.underscore %>/edit", "/update_<%= singular_name.underscore %>"
         redirect_to("/<%= plural_name.underscore %>/#{@<%= singular_name.underscore %>.id}", :notice => "<%= singular_name.humanize %> updated successfully.")
       else
         redirect_back(:fallback_location => "/", :notice => "<%= singular_name.humanize %> updated successfully.")

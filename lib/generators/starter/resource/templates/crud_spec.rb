@@ -77,10 +77,10 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 
   context "details page" do
     it "has a 'Delete' link", points: 2 do
-      create(:<%= singular_table_name %>)
+      <%= singular_table_name %>_to_delete = create(:<%= singular_table_name %>)
 
       visit "/<%= plural_table_name %>"
-      click_on "Show details"
+      find("a[href*='#{<%= singular_table_name %>_to_delete.id}']", text: "Show details").click
 
       expect(page).to have_css("a", text: "Delete")
     end
@@ -88,111 +88,84 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 
   context "delete link" do
     it "removes a row from the table", points: 5 do
-      photo_to_delete = create(:photo)
+      <%= singular_table_name %>_to_delete = create(:<%= singular_table_name %>)
 
-      visit "/photos"
-      click_on "Show details"
+      visit "/<%= plural_table_name %>"
+      find("a[href*='#{<%= singular_table_name %>_to_delete.id}']", text: "Show details").click
       click_on "Delete"
 
-      expect(Photo.exists?(photo_to_delete.id)).to be(false)
+      expect(<%= singular_name.camelize %>.exists?(<%= singular_table_name %>_to_delete.id)).to be(false)
     end
   end
 
   context "delete link" do
     it "redirects to the index", points: 3, hint: h("redirect_vs_render") do
-      create(:photo)
+      <%= singular_table_name %>_to_delete = create(:<%= singular_table_name %>)
 
-      visit "/photos"
-      click_on "Show details"
+      visit "/<%= plural_table_name %>"
+      find("a[href*='#{<%= singular_table_name %>_to_delete.id}']", text: "Show details").click
       click_on "Delete"
 
-      expect(page).to have_current_path("/photos")
+      expect(page).to have_current_path("/<%= plural_table_name %>")
     end
   end
 
   context "details page" do
     it "has an 'Edit' link", points: 5 do
-      create(:photo)
+      <%= singular_table_name %>_to_edit = create(:<%= singular_table_name %>)
 
-      visit "/photos"
-      click_on "Show details"
+      visit "/<%= plural_table_name %>"
+      find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click
 
       expect(page).to have_css("a", text: "Edit")
     end
   end
 
+<% attributes.each do |attribute| -%>
   context "edit form" do
-    it "has source pre-populated", points: 3, hint: h("value_attribute") do
-      test_source = "Some fake pre-existing source at #{Time.now}"
-      create(:photo, source: test_source)
+    it "has <%= attribute.human_name.downcase %> pre-populated", points: 3, hint: h("value_attribute") do
+      test_<%= attribute.name %> = "Some fake pre-existing <%= attribute.human_name.downcase %> at #{Time.now}"
+      <%= singular_table_name %>_to_edit = create(:<%= singular_table_name %>, <%= attribute.name %>: test_<%= attribute.name %>)
 
-      visit "/photos"
-      click_on "Show details"
+      visit "/<%= plural_table_name %>"
+      find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click
       click_on "Edit"
 
-      expect(page).to have_css("input[value='#{test_source}']")
+      expect(page).to have_css("input[value='#{test_<%= attribute.name %>}']")
     end
   end
 
+<% end -%>
+<% attributes.each do |attribute| -%>
   context "edit form" do
-    it "has caption pre-populated", points: 3, hint: h("value_attribute") do
-      test_caption = "Some fake pre-existing caption at #{Time.now}"
-      create(:photo, caption: test_caption)
+    it "updates <%= attribute.human_name.downcase %> when submitted", points: 5, hint: h("label_for_input button_type") do
+      <%= singular_table_name %>_to_edit = create(:<%= singular_table_name %>, <%= attribute.name %>: "Boring old <%= attribute.human_name.downcase %>", id: 42)
 
-      visit "/photos"
-      click_on "Show details"
+      visit "/<%= plural_table_name %>"
+      find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click
       click_on "Edit"
 
-      expect(page).to have_css("input[value='#{test_caption}']")
+      test_<%= attribute.name %> = "Exciting new <%= attribute.human_name.downcase %> at #{Time.now}"
+      fill_in "<%= attribute.human_name %>", with: test_<%= attribute.name %>
+      click_on "<%= singular_table_name.humanize.downcase %>"
+
+      photo_as_revised = <%= singular_name.camelize %>.find(<%= singular_table_name %>_to_edit.id)
+
+      expect(photo_as_revised.<%= attribute.name %>).to eq(test_<%= attribute.name %>)
     end
   end
 
-  context "edit form" do
-    it "updates source when submitted", points: 5, hint: h("label_for_input button_type") do
-      photo = create(:photo, source: "Boring old source", id: 42)
-
-      visit "/photos"
-      click_on "Show details"
-      click_on "Edit"
-
-      test_source = "Exciting new source at #{Time.now}"
-      fill_in "Source", with: test_source
-      click_on "Update Photo"
-
-      photo_as_revised = Photo.find(42)
-
-      expect(photo_as_revised.source).to eq(test_source)
-    end
-  end
-
-  context "edit form" do
-    it "updates caption when submitted", points: 5, hint: h("label_for_input button_type") do
-      create(:photo, caption: "Boring old caption", id: 42)
-
-      visit "/photos"
-      click_on "Show details"
-      click_on "Edit"
-
-      test_caption = "Exciting new caption at #{Time.now}"
-      fill_in "Caption", with: test_caption
-      click_on "Update Photo"
-
-      photo_as_revised = Photo.find(42)
-
-      expect(photo_as_revised.caption).to eq(test_caption)
-    end
-  end
-
+<% end -%>
   context "edit form" do
     it "redirects to the details page", points: 3, hint: h("embed_vs_interpolate redirect_vs_render") do
-      photo_to_edit = create(:photo)
+      <%= singular_table_name %>_to_edit = create(:<%= singular_table_name %>, <%= attribute.name %>: "Boring old <%= attribute.human_name.downcase %>", id: 42)
 
-      visit "/photos"
-      click_on "Show details"
+      visit "/<%= plural_table_name %>"
+      find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click
       click_on "Edit"
-      click_on "Update Photo"
+      click_on "<%= singular_table_name.humanize.downcase %>"
 
-      expect(page).to have_current_path("/photos/#{photo_to_edit.id}")
+      expect(page).to have_current_path(/.*#{<%= singular_table_name %>_to_edit.id}.*/)
     end
   end
 end

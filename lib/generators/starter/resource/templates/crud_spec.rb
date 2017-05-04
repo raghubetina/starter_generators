@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "<%= plural_table_name.upcase %>" do
+feature "<%= plural_table_name.humanize.upcase %>" do
 <% attributes.each do |attribute| -%>
   context "index" do
     it "has the <%= attribute.human_name.downcase %> of every row", points: 5 do
@@ -15,59 +15,36 @@ feature "<%= plural_table_name.upcase %>" do
   end
 
 <% end -%>
-
-
-  context "index" do
-    it "has the caption of every row", points: 5 do
-      test_photos = create_list(:photo, 5)
-
-      visit "/photos"
-
-      test_photos.each do |current_photo|
-        expect(page).to have_content(current_photo.caption)
-      end
-    end
-  end
-
   context "index" do
     it "has a link to the details page of every row", points: 5 do
-      test_photos = create_list(:photo, 5)
+      test_<%= plural_table_name %> = create_list(:<%= singular_table_name %>, 5)
 
-      visit "/photos"
+      visit "/<%= plural_table_name %>"
 
-      test_photos.each do |current_photo|
-        expect(page).to have_css("a[href*='#{current_photo.id}']", text: "Show details")
+      test_<%= plural_table_name %>.each do |current_<%= singular_table_name %>|
+        expect(page).to have_css("a[href*='#{current_<%= singular_table_name %>.id}']", text: "Show details")
       end
     end
   end
 
+<% attributes.each do |attribute| -%>
   context "details page" do
-    it "has the correct source", points: 3 do
-      photo_to_show = create(:photo)
+    it "has the correct <%= attribute.human_name.downcase %>", points: 3 do
+      <%= singular_table_name %>_to_show = create(:<%= singular_table_name %>)
 
-      visit "/photos"
+      visit "/<%= plural_table_name %>"
       click_on "Show details"
 
-      expect(page).to have_content(photo_to_show.source)
+      expect(page).to have_content(<%= singular_table_name %>_to_show.<%= attribute.name %>)
     end
   end
 
-  context "details page" do
-    it "has the correct caption", points: 3 do
-      photo_to_show = create(:photo)
-
-      visit "/photos"
-      click_on "Show details"
-
-      expect(page).to have_content(photo_to_show.caption)
-    end
-  end
-
+<% end -%>
   context "index" do
-    it "has a link to the new photo page", points: 2 do
-      visit "/photos"
+    it "has a link to the new <%= singular_table_name.humanize.downcase %> page", points: 2 do
+      visit "/<%= plural_table_name %>"
 
-      expect(page).to have_css("a", text: "Add a new photo")
+      expect(page).to have_css("a", text: "Add a new <%= singular_table_name.humanize.downcase %>")
     end
   end
 

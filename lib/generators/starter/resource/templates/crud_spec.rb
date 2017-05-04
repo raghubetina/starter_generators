@@ -139,7 +139,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 <% attributes.each do |attribute| -%>
   context "edit form" do
     it "updates <%= attribute.human_name.downcase %> when submitted", points: 5, hint: h("label_for_input button_type") do
-      <%= singular_table_name %>_to_edit = create(:<%= singular_table_name %>, <%= attribute.name %>: "Boring old <%= attribute.human_name.downcase %>", id: 42)
+      <%= singular_table_name %>_to_edit = create(:<%= singular_table_name %>, <%= attribute.name %>: "Boring old <%= attribute.human_name.downcase %>")
 
       visit "/<%= plural_table_name %>"
       find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click
@@ -158,7 +158,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 <% end -%>
   context "edit form" do
     it "redirects to the details page", points: 3, hint: h("embed_vs_interpolate redirect_vs_render") do
-      <%= singular_table_name %>_to_edit = create(:<%= singular_table_name %>, <%= attribute.name %>: "Boring old <%= attribute.human_name.downcase %>", id: 42)
+      <%= singular_table_name %>_to_edit = create(:<%= singular_table_name %>)
 
       visit "/<%= plural_table_name %>"
       find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click

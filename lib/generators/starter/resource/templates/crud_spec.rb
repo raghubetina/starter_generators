@@ -147,7 +147,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 
       test_<%= attribute.name %> = "Exciting new <%= attribute.human_name.downcase %> at #{Time.now}"
       fill_in "<%= attribute.human_name %>", with: test_<%= attribute.name %>
-      click_on "<%= singular_table_name.humanize.downcase %>"
+      click_on "Update <%= singular_table_name.humanize.downcase %>"
 
       photo_as_revised = <%= singular_name.camelize %>.find(<%= singular_table_name %>_to_edit.id)
 
@@ -163,7 +163,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
       visit "/<%= plural_table_name %>"
       find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click
       click_on "Edit"
-      click_on "<%= singular_table_name.humanize.downcase %>"
+      click_on "Update <%= singular_table_name.humanize.downcase %>"
 
       expect(page).to have_current_path(/.*#{<%= singular_table_name %>_to_edit.id}.*/)
     end

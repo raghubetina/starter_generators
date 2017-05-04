@@ -1,52 +1,52 @@
-<div class="page-header">
-  <h1>
-    <%= plural_table_name.humanize %>
-<% if named_routes? -%>
-    <%%= link_to new_<%= singular_table_name %>_url, :class => "btn btn-lg btn-success" do %>
-      New <%= singular_table_name.humanize %>
-    <%% end  %>
-<% else -%>
-    <a href="/<%= plural_name %>/new" class="btn btn-lg btn-success">New <%= singular_table_name.humanize %></a>
-<% end -%>
-  </h1>
-</div>
+<h1>
+  All <%= plural_table_name.humanize.downcase %>
+</h1>
 
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-striped table-hover">
-      <tr>
-<% attributes.each do |attribute| -%>
-        <th><%= attribute.human_name %></th>
-<% end -%>
-        <th>Actions</th>
-      </tr>
+<a href="/<%= plural_name %>/new">
+  Add a new <%= singular_table_name.humanize.downcase %>
+</a>
 
-      <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
-      <tr>
+<hr>
+
+<table class="table">
+  <tr>
 <% attributes.each do |attribute| -%>
-        <td><%%= <%= singular_table_name %>.<%= attribute.name %> %></td>
+    <th>
+      <%= attribute.human_name %>
+    </th>
+
 <% end -%>
-        <td>
+    <th>
+    </th>
+  </tr>
+
+  <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
+  <tr>
+<% attributes.each do |attribute| -%>
+    <td>
+      <%%= <%= singular_table_name %>.<%= attribute.name %> %>
+    </td>
+
+<% end -%>
+    <td>
 <% if named_routes? -%>
-          <%%= link_to <%= singular_table_name %>_url(<%= singular_table_name %>), :class => "btn btn-primary" do %>
-            Show
-          <%% end %>
-          <%%= link_to edit_<%= singular_table_name %>_url(<%= singular_table_name %>), :class => "btn btn-warning" do %>
-            Edit
-          <%% end %>
-          <%%= link_to <%= singular_table_name %>_url(<%= singular_table_name %>), :method => "delete", :data => { :confirm => "Do you really want to delete this <%= singular_table_name %>?" }, :class => "btn btn-danger" do %>
-            Delete
-          <%% end %>
-<% else -%>
-          <a href="/<%= plural_name %>/<%%= <%= singular_table_name %>.id %>" class="btn btn-primary">Show</a>
-<% unless read_only? -%>
-          <a href="/<%= plural_name %>/<%%= <%= singular_table_name %>.id %>/edit" class="btn btn-warning">Edit</a>
-          <a href="/delete_<%= singular_table_name %>/<%%= <%= singular_table_name %>.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
-<% end -%>
-<% end -%>
-        </td>
-      </tr>
+      <%%= link_to <%= singular_table_name %>_url(<%= singular_table_name %>), :class => "btn btn-primary" do %>
+        Show
       <%% end %>
-    </table>
-  </div>
-</div>
+      <%%= link_to edit_<%= singular_table_name %>_url(<%= singular_table_name %>), :class => "btn btn-warning" do %>
+        Edit
+      <%% end %>
+      <%%= link_to <%= singular_table_name %>_url(<%= singular_table_name %>), :method => "delete", :data => { :confirm => "Do you really want to delete this <%= singular_table_name %>?" }, :class => "btn btn-danger" do %>
+        Delete
+      <%% end %>
+<% else -%>
+      <a href="/<%= plural_name %>/<%%= <%= singular_table_name %>.id %>">
+        Show details
+      </a>
+<% unless read_only? -%>
+<% end -%>
+<% end -%>
+    </td>
+  </tr>
+  <%% end %>
+</table>

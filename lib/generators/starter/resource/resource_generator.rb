@@ -43,13 +43,12 @@ module Starter
     #   empty_directory File.join("app/views", controller_file_path)
     # end
 
-    def copy_view_files
+    def generate_view_files
       available_views.each do |view|
         filename = view_filename_with_extensions(view)
-        template filename, File.join("app/views", controller_file_path, File.basename(filename))
+        template filename, File.join("app/views", "#{controller_file_path}_templates", File.basename(filename))
       end
     end
-
 
     def generate_routes
       return if options[:skip_controller]
@@ -64,31 +63,41 @@ module Starter
       end
     end
 
+    def generate_specs
+      template "crud_spec.rb", "spec/features/crud_#{plural_name.underscore}_spec.rb"
+    end
+
+    def generate_factories
+      template "factories.rb", "spec/factories/#{plural_name.underscore}.rb"
+    end
+
   protected
 
     def golden_7
-      ["# Routes for the #{singular_name.capitalize} resource:",
+      ["# Routes for the #{singular_name.humanize} resource:",
+        "",
         "  # CREATE",
-        "  get \"/#{plural_name}/new\", :controller => \"#{plural_name}\", :action => \"new\"",
-        "  post \"/create_#{singular_name}\", :controller => \"#{plural_name}\", :action => \"create\"",
+        "  get(\"/#{plural_name}/new\", { :controller => \"#{plural_name}\", :action => \"new_form\" })",
+        "  get(\"/create_#{singular_name}\", { :controller => \"#{plural_name}\", :action => \"create_row\" })",
         "",
         "  # READ",
-        "  get \"/#{plural_name}\", :controller => \"#{plural_name}\", :action => \"index\"",
-        "  get \"/#{plural_name}/:id\", :controller => \"#{plural_name}\", :action => \"show\"",
+        "  get(\"/#{plural_name}\", { :controller => \"#{plural_name}\", :action => \"index\" })",
+        "  get(\"/#{plural_name}/:id\", { :controller => \"#{plural_name}\", :action => \"show\" })",
         "",
         "  # UPDATE",
-        "  get \"/#{plural_name}/:id/edit\", :controller => \"#{plural_name}\", :action => \"edit\"",
-        "  post \"/update_#{singular_name}/:id\", :controller => \"#{plural_name}\", :action => \"update\"",
+        "  get(\"/#{plural_name}/:id/edit\", { :controller => \"#{plural_name}\", :action => \"edit_form\" })",
+        "  get(\"/update_#{singular_name}/:id\", { :controller => \"#{plural_name}\", :action => \"update_row\" })",
         "",
         "  # DELETE",
-        "  get \"/delete_#{singular_name}/:id\", :controller => \"#{plural_name}\", :action => \"destroy\"",
+        "  get(\"/delete_#{singular_name}/:id\", { :controller => \"#{plural_name}\", :action => \"destroy_row\" })",
+        "",
         "  ##{'-' * 30}"
         ].join("\n")
     end
 
     def read_only_routes
       [
-        "# Routes for the #{singular_name.capitalize} resource:",
+        "# Routes for the #{singular_name.humanize} resource:",
         "  # READ",
         "  get \"/#{plural_name}\", :controller => \"#{plural_name}\", :action => \"index\"",
         "  get \"/#{plural_name}/:id\", :controller => \"#{plural_name}\", :action => \"show\"",
@@ -97,7 +106,7 @@ module Starter
     end
 
     def golden_7_named
-      ["# Routes for the #{singular_name.capitalize} resource:",
+      ["# Routes for the #{singular_name.humanize} resource:",
         "  # CREATE",
         "  get '/#{plural_name}/new',      :controller => '#{plural_name}', :action => 'new',    :as => 'new_#{singular_name}'",
         "  post '/#{plural_name}',         :controller => '#{plural_name}', :action => 'create', :as => '#{plural_name}'",
@@ -156,7 +165,7 @@ module Starter
       elsif read_only?
         %w(index show)
       else
-        %w(index new edit show)
+        %w(index new_form edit_form show)
       end
     end
 

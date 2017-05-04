@@ -1,0 +1,45 @@
+<h1>
+  Add a new <%= singular_table_name.humanize.downcase %>
+</h1>
+
+<hr>
+
+<form action="/create_<%= singular_table_name %>">
+<% attributes.each do |attribute| -%>
+  <!-- Label and input for <%= attribute.name %> -->
+<% if attribute.field_type == :check_box -%>
+  <div class="checkbox">
+    <label for="<%= attribute.name %>">
+      <input type="checkbox" id="<%= attribute.name %>" name="<%= attribute.name %>">
+      <%= attribute.name.humanize %>
+    </label>
+  </div>
+<% else -%>
+  <div class="form-group">
+    <label for="<%= attribute.name %>" class="control-label">
+      <%= attribute.name.humanize %>
+    </label>
+
+<% if attribute.field_type == :text_area -%>
+    <textarea id="<%= attribute.name %>" name="<%= attribute.name %>" class="form-control" rows="3"></textarea>
+<% else -%>
+    <input type="text" id="<%= attribute.name %>" name="<%= attribute.name %>" class="form-control">
+<% end -%>
+  </div>
+<% end -%>
+
+<% end -%>
+  <button class="btn btn-default">
+    Create <%= singular_table_name.humanize.downcase %>
+  </button>
+<% if named_routes? -%>
+<%% end %>
+<% else -%>
+</form>
+<% end -%>
+
+<hr>
+
+<a href="/<%= plural_name %>">
+  Go back
+</a>

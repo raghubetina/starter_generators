@@ -43,13 +43,12 @@ module Starter
     #   empty_directory File.join("app/views", controller_file_path)
     # end
 
-    def copy_view_files
+    def generate_view_files
       available_views.each do |view|
         filename = view_filename_with_extensions(view)
         template filename, File.join("app/views", controller_file_path, File.basename(filename))
       end
     end
-
 
     def generate_routes
       return if options[:skip_controller]
@@ -62,6 +61,10 @@ module Starter
       else
         route golden_7, "RESTful routes"
       end
+    end
+
+    def generate_specs
+      template "crud_spec.rb", "spec/features/crud_#{plural_name.underscore}_spec.rb"
     end
 
   protected

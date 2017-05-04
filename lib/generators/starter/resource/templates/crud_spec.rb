@@ -1,17 +1,20 @@
 require "rails_helper"
 
-feature "PHOTOS" do
+feature "<%= plural_table_name.upcase %>" do
+<% attributes.each do |attribute| -%>
   context "index" do
-    it "has the source of every row", points: 5 do
-      test_photos = create_list(:photo, 5)
+    it "has the <%= attribute.human_name %> of every row", points: 5 do
+      test_<%= plural_table_name %> = create_list(:<%= singular_table_name %>, 5)
 
-      visit "/photos"
+      visit "/<%= plural_table_name %>"
 
-      test_photos.each do |current_photo|
-        expect(page).to have_content(current_photo.source)
+      test_<%= plural_table_name %>.each do |current_<%= singular_table_name %>|
+        expect(page).to have_content(current_<%= singular_table_name %>.<%= attribute.name %>)
       end
     end
   end
+<% end -%>
+
 
   context "index" do
     it "has the caption of every row", points: 5 do

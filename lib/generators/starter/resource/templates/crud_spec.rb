@@ -33,7 +33,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
       <%= singular_table_name %>_to_show = create(:<%= singular_table_name %>)
 
       visit "/<%= plural_table_name %>"
-      click_on "Show details"
+      find("a[href*='#{<%= singular_table_name %>_to_show.id}']", text: "Show details").click
 
       expect(page).to have_content(<%= singular_table_name %>_to_show.<%= attribute.name %>)
     end
@@ -69,7 +69,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
       visit "/<%= plural_table_name %>"
       click_on "Add a new <%= singular_table_name.humanize.downcase %>"
 
-      click_on "Create <%= singular_table_name.humanize %>"
+      click_on "Create <%= singular_table_name.humanize.downcase %>"
 
       expect(page).to have_current_path("/<%= plural_table_name %>")
     end
@@ -77,9 +77,9 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 
   context "details page" do
     it "has a 'Delete' link", points: 2 do
-      create(:photo)
+      create(:<%= singular_table_name %>)
 
-      visit "/photos"
+      visit "/<%= plural_table_name %>"
       click_on "Show details"
 
       expect(page).to have_css("a", text: "Delete")

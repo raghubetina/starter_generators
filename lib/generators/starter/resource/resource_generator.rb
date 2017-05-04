@@ -67,6 +67,10 @@ module Starter
       template "crud_spec.rb", "spec/features/crud_#{plural_name.underscore}_spec.rb"
     end
 
+    def generate_factories
+      template "factories.rb", "spec/factories/#{plural_name.underscore}.rb"
+    end
+
   protected
 
     def golden_7

@@ -1,0 +1,45 @@
+<h1>
+  Edit <%= singular_table_name.humanize.downcase %> #<%%= @<%= singular_table_name %>.id %>
+</h1>
+
+<hr>
+
+<form action="/update_<%= singular_table_name %>/<%%= @<%= singular_table_name %>.id %>">
+<% attributes.each do |attribute| -%>
+  <!-- Label and input for <%= attribute.name %> -->
+<% if attribute.field_type == :check_box -%>
+  <div class="checkbox">
+    <label for="<%= attribute.name %>">
+      <input type="checkbox" id="<%= attribute.name %>" name="<%= attribute.name %>" value="1" <%%= "checked" if @<%= singular_table_name %>.<%= attribute.name %> %>>
+      <%= attribute.name.humanize %>
+    </label>
+  </div>
+<% else -%>
+  <div class="form-group">
+    <label for="<%= attribute.name %>" class="control-label">
+      <%= attribute.name.humanize %>
+    </label>
+
+<% if attribute.field_type == :text_area -%>
+    <textarea id="<%= attribute.name %>" name="<%= attribute.name %>" class="form-control" rows="3"><%%= @<%= singular_table_name %>.<%= attribute.name %> %></textarea>
+<% else -%>
+    <input type="text" id="<%= attribute.name %>" name="<%= attribute.name %>" class="form-control" value="<%%= @<%= singular_table_name %>.<%= attribute.name %> %>">
+<% end -%>
+  </div>
+<% end -%>
+
+<% end -%>
+  <button class="btn btn-default">
+    Update <%= singular_table_name.humanize.downcase %>
+  </button>
+<% if named_routes? -%>
+<%% end %>
+<% else -%>
+</form>
+<% end -%>
+
+<hr>
+
+<a href="/<%= plural_name %>">
+  Go back
+</a>

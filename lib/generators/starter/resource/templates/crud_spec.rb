@@ -48,42 +48,30 @@ feature "<%= plural_table_name.humanize.upcase %>" do
     end
   end
 
+<% attributes.each do |attribute| -%>
   context "new form" do
-    it "saves the source when submitted", points: 2, hint: h("label_for_input") do
-      visit "/photos"
-      click_on "Add a new photo"
+    it "saves the <%= attribute.human_name.downcase %> when submitted", points: 2, hint: h("label_for_input") do
+      visit "/<%= plural_table_name %>"
+      click_on "Add a new <%= singular_table_name.humanize.downcase %>"
 
-      test_source = "A fake source I'm typing at #{Time.now}"
-      fill_in "Source", with: test_source
-      click_on "Create Photo"
+      test_<%= attribute.name %> = "A fake <%= attribute.human_name.downcase %> I'm typing at #{Time.now}"
+      fill_in "<%= attribute.human_name %>", with: test_<%= attribute.name %>
+      click_on "Create <%= singular_table_name.humanize %>"
 
-      last_photo = Photo.order(created_at: :asc).last
-      expect(last_photo.source).to eq(test_source)
+      last_<%= singular_table_name %> = <%= singular_name.camelize %>.order(created_at: :asc).last
+      expect(last_<%= singular_table_name %>.<%= attribute.name %>).to eq(test_<%= attribute.name %>)
     end
   end
 
-  context "new form" do
-    it "saves the caption when submitted", points: 2, hint: h("label_for_input") do
-      visit "/photos"
-      click_on "Add a new photo"
-
-      test_caption = "A fake caption I'm typing at #{Time.now}"
-      fill_in "Caption", with: test_caption
-      click_on "Create Photo"
-
-      last_photo = Photo.order(created_at: :asc).last
-      expect(last_photo.caption).to eq(test_caption)
-    end
-  end
-
+<% end -%>
   context "new form" do
     it "redirects to the index when submitted", points: 2, hint: h("redirect_vs_render") do
-      visit "/photos"
-      click_on "Add a new photo"
+      visit "/<%= plural_table_name %>"
+      click_on "Add a new <%= singular_table_name.humanize.downcase %>"
 
-      click_on "Create Photo"
+      click_on "Create <%= singular_table_name.humanize %>"
 
-      expect(page).to have_current_path("/photos")
+      expect(page).to have_current_path("/<%= plural_table_name %>")
     end
   end
 

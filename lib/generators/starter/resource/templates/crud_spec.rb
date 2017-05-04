@@ -3,7 +3,7 @@ require "rails_helper"
 feature "<%= plural_table_name.upcase %>" do
 <% attributes.each do |attribute| -%>
   context "index" do
-    it "has the <%= singular_name %> of every row", points: 5 do
+    it "has the <%= attribute.name.humanize %> of every row", points: 5 do
       test_<%= plural_table_name %> = create_list(:<%= singular_table_name %>, 5)
 
       visit "/<%= plural_table_name %>"

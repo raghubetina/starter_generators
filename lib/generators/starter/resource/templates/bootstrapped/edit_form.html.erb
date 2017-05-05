@@ -33,7 +33,7 @@
 
 <% end -%>
   <button class="btn btn-default">
-    Update <%= human_name.titleize %>
+    Update <%= singular_table_name.humanize.downcase %>
   </button>
 <% if named_routes? -%>
 <%% end %>

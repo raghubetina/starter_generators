@@ -33,7 +33,7 @@
 
 <% end -%>
       <button class="btn btn-default">
-        Create <%= human_name.titleize %>
+        Create <%= singular_table_name.humanize.downcase %>
       </button>
 <% if named_routes? -%>
     <%% end %>

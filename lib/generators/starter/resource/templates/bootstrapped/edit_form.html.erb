@@ -1,64 +1,42 @@
-<!-- Validation failure messages -->
-<%% if @<%= singular_table_name %>.errors.any? %>
-  <%% @<%= singular_table_name %>.errors.full_messages.each do |message| %>
-    <div class="alert alert-dismissable alert-danger">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <%%= message %>
-    </div>
-  <%% end %>
-<%% end %>
+<h1>
+  Edit <%= singular_table_name.humanize.downcase %> #<%%= @<%= singular_table_name %>.id %>
+</h1>
 
-<div class="page-header">
-  <h3>Edit <%= singular_table_name.titleize %> #<%%= @<%= singular_table_name %>.id %></h3>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
 <% if named_routes? -%>
-    <%%= form_tag(<%= singular_table_name %>_url(@<%= singular_table_name %>.id), :method => "patch") do %>
+<%%= form_tag(<%= singular_table_name %>_url(@<%= singular_table_name %>.id), :method => "patch") do %>
 <% else -%>
-    <form action="/update_<%= singular_table_name %>/<%%= @<%= singular_table_name %>.id %>" method="post">
-      <!-- Hidden input for authenticity token to protect from forgery -->
-      <input name="authenticity_token" type="hidden" value="<%%= form_authenticity_token %>">
+<form action="/update_<%= singular_table_name %>/<%%= @<%= singular_table_name %>.id %>">
 <% end -%>
 
 <% attributes.each do |attribute| -%>
-      <!-- Label and input for <%= attribute.name %> -->
+  <!-- Label and input for <%= attribute.name %> -->
 <% if attribute.field_type == :check_box -%>
-      <div class="checkbox">
-        <label for="<%= attribute.name %>">
-          <input type="checkbox" id="<%= attribute.name %>" name="<%= attribute.name %>" value="1" <%%= "checked" if @<%= singular_table_name %>.<%= attribute.name %> %>>
-          <%= attribute.name.humanize %>
-        </label>
-      </div>
+  <div class="checkbox">
+    <label for="<%= attribute.name %>">
+      <input type="checkbox" id="<%= attribute.name %>" name="<%= attribute.name %>" value="1" <%%= "checked" if @<%= singular_table_name %>.<%= attribute.name %> %>>
+      <%= attribute.name.humanize %>
+    </label>
+  </div>
 <% else -%>
-      <div class="form-group">
-        <label for="<%= attribute.name %>" class="control-label">
-          <%= attribute.name.humanize %>
-        </label>
+  <div class="form-group">
+    <label for="<%= attribute.name %>" class="control-label">
+      <%= attribute.name.humanize %>
+    </label>
 
 <% if attribute.field_type == :text_area -%>
-        <textarea id="<%= attribute.name %>" name="<%= attribute.name %>" placeholder="<%= attribute.name.humanize %>" class="form-control" rows="3"><%%= @<%= singular_table_name %>.<%= attribute.name %> %></textarea>
+    <textarea id="<%= attribute.name %>" name="<%= attribute.name %>" class="form-control" rows="3"><%%= @<%= singular_table_name %>.<%= attribute.name %> %></textarea>
 <% else -%>
-        <input type="text" id="<%= attribute.name %>" name="<%= attribute.name %>" placeholder="<%= attribute.name.humanize %>" class="form-control" value="<%%= @<%= singular_table_name %>.<%= attribute.name %> %>">
+    <input type="text" id="<%= attribute.name %>" name="<%= attribute.name %>" class="form-control" value="<%%= @<%= singular_table_name %>.<%= attribute.name %> %>">
 <% end -%>
-      </div>
+  </div>
 <% end -%>
 
 <% end -%>
-      <button class="btn btn-warning">
-        Update <%= human_name.titleize %>
-      </button>
-      or
+  <button class="btn btn-default">
+    Update <%= human_name.titleize %>
+  </button>
 <% if named_routes? -%>
-      <%%= link_to "Cancel", <%= singular_table_name %>_url(@<%= singular_table_name %>.id) %>
+<%% end %>
 <% else -%>
-      <a href="/<%= plural_name  %>/<%%= @<%= singular_table_name %>.id %>">Cancel</a>
+</form>
 <% end -%>
-<% if named_routes? -%>
-    <%% end %>
-<% else -%>
-    </form>
-<% end -%>
-  </div>
-</div>

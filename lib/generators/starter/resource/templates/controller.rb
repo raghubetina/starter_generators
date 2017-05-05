@@ -34,7 +34,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
     save_status = @<%= singular_name.underscore %>.save
 
     if save_status == true
-      redirect_to("/<%= @plural_name.underscore %>/#{@<%= singular_name.underscore %>.id}", :notice => "<%= singular_name.humanize %> created successfully.")
+      redirect_to("/<%= @plural_name.underscore %>)
     else
       render("<%= plural_name.underscore %>_templates/new_form.html.erb")
     end
@@ -64,7 +64,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
     save_status = @<%= singular_name.underscore %>.save
 
     if save_status == true
-      redirect_to("/<%= @plural_name.underscore %>/#{@<%= singular_name.underscore %>.id}", :notice => "<%= singular_name.humanize %> updated successfully.")
+      redirect_to("/<%= @plural_name.underscore %>/#{@<%= singular_name.underscore %>.id}")
     else
       render("<%= plural_name.underscore %>_templates/edit_form.html.erb")
     end
@@ -76,10 +76,6 @@ class <%= plural_name.camelize %>Controller < ApplicationController
 
     @<%= singular_name.underscore %>.destroy
 
-    if URI(request.referer).path == "/<%= plural_name.underscore %>/#{@<%= singular_name.underscore %>.id}"
-      redirect_to("/", :notice => "<%= singular_name.humanize %> deleted.")
-    else
-      redirect_to(:back, :notice => "<%= singular_name.humanize %> deleted.")
-    end
+    redirect_to("/<%= @plural_name.underscore %>)
   end
 end

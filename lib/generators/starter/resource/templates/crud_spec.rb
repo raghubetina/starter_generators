@@ -56,7 +56,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 
       test_<%= attribute.name %> = "A fake <%= attribute.human_name.downcase %> I'm typing at #{Time.now}"
       fill_in "<%= attribute.human_name %>", with: test_<%= attribute.name %>
-      click_on "Create <%= singular_table_name.humanize %>"
+      click_on "Create <%= singular_table_name.humanize.downcase %>"
 
       last_<%= singular_table_name %> = <%= singular_name.camelize %>.order(created_at: :asc).last
       expect(last_<%= singular_table_name %>.<%= attribute.name %>).to eq(test_<%= attribute.name %>)

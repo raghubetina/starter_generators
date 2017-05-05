@@ -34,7 +34,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
     save_status = @<%= singular_name.underscore %>.save
 
     if save_status == true
-      redirect_to("/<%= @plural_name.underscore %>)
+      redirect_to("/<%= @plural_name.underscore %>")
     else
       render("<%= plural_name.underscore %>_templates/new_form.html.erb")
     end
@@ -76,6 +76,6 @@ class <%= plural_name.camelize %>Controller < ApplicationController
 
     @<%= singular_name.underscore %>.destroy
 
-    redirect_to("/<%= @plural_name.underscore %>)
+    redirect_to("/<%= @plural_name.underscore %>")
   end
 end

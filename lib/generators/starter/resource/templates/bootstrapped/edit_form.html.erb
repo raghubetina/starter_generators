@@ -2,12 +2,9 @@
   Edit <%= singular_table_name.humanize.downcase %> #<%%= @<%= singular_table_name %>.id %>
 </h1>
 
-<% if named_routes? -%>
-<%%= form_tag(<%= singular_table_name %>_url(@<%= singular_table_name %>.id), :method => "patch") do %>
-<% else -%>
-<form action="/update_<%= singular_table_name %>/<%%= @<%= singular_table_name %>.id %>">
-<% end -%>
+<hr>
 
+<form action="/update_<%= singular_table_name %>/<%%= @<%= singular_table_name %>.id %>">
 <% attributes.each do |attribute| -%>
   <!-- Label and input for <%= attribute.name %> -->
 <% if attribute.field_type == :check_box -%>

@@ -26,7 +26,7 @@
     <td>
       <%%= <%= singular_table_name %>.<%= attribute.name %> %>
     </td>
-    
+
 <% end -%>
     <td>
 <% if named_routes? -%>
@@ -40,7 +40,7 @@
         Delete
       <%% end %>
 <% else -%>
-      <a href="/<%= plural_name %>/<%%= <%= singular_table_name %>.id %>" class="btn btn-default">
+      <a href="/<%= plural_name %>/<%%= <%= singular_table_name %>.id %>">
         Show details
       </a>
 <% unless read_only? -%>

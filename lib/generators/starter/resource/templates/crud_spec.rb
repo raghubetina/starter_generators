@@ -76,7 +76,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
   end
 
   context "details page" do
-    it "has a 'Delete' link", points: 2 do
+    it "has a 'Delete <%= singular_table_name.humanize.downcase %>' link", points: 2 do
       <%= singular_table_name %>_to_delete = create(:<%= singular_table_name %>)
 
       visit "/<%= plural_table_name %>"
@@ -92,7 +92,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 
       visit "/<%= plural_table_name %>"
       find("a[href*='#{<%= singular_table_name %>_to_delete.id}']", text: "Show details").click
-      click_on "Delete"
+      click_on "Delete <%= singular_table_name.humanize.downcase %>"
 
       expect(<%= singular_name.camelize %>.exists?(<%= singular_table_name %>_to_delete.id)).to be(false)
     end
@@ -104,20 +104,20 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 
       visit "/<%= plural_table_name %>"
       find("a[href*='#{<%= singular_table_name %>_to_delete.id}']", text: "Show details").click
-      click_on "Delete"
+      click_on "Delete <%= singular_table_name.humanize.downcase %>"
 
       expect(page).to have_current_path("/<%= plural_table_name %>")
     end
   end
 
   context "details page" do
-    it "has an 'Edit' link", points: 5 do
+    it "has an 'Edit <%= singular_table_name.humanize.downcase %>' link", points: 5 do
       <%= singular_table_name %>_to_edit = create(:<%= singular_table_name %>)
 
       visit "/<%= plural_table_name %>"
       find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click
 
-      expect(page).to have_css("a", text: "Edit")
+      expect(page).to have_css("a", text: "Edit <%= singular_table_name.humanize.downcase %>")
     end
   end
 
@@ -129,7 +129,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 
       visit "/<%= plural_table_name %>"
       find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click
-      click_on "Edit"
+      click_on "Edit <%= singular_table_name.humanize.downcase %>"
 
       expect(page).to have_css("input[value='#{test_<%= attribute.name %>}']")
     end
@@ -143,7 +143,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 
       visit "/<%= plural_table_name %>"
       find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click
-      click_on "Edit"
+      click_on "Edit <%= singular_table_name.humanize.downcase %>"
 
       test_<%= attribute.name %> = "Exciting new <%= attribute.human_name.downcase %> at #{Time.now}"
       fill_in "<%= attribute.human_name %>", with: test_<%= attribute.name %>
@@ -162,7 +162,7 @@ feature "<%= plural_table_name.humanize.upcase %>" do
 
       visit "/<%= plural_table_name %>"
       find("a[href*='#{<%= singular_table_name %>_to_edit.id}']", text: "Show details").click
-      click_on "Edit"
+      click_on "Edit <%= singular_table_name.humanize.downcase %>"
       click_on "Update <%= singular_table_name.humanize.downcase %>"
 
       expect(page).to have_current_path(/.*#{<%= singular_table_name %>_to_edit.id}.*/)

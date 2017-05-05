@@ -2,6 +2,12 @@
   <%= singular_table_name.humanize %> #<%%= @<%= singular_table_name %>.id %> details
 </h1>
 
+<a href="/<%= plural_name %>/<%%= @<%= singular_table_name %>.id %>/edit">
+  Edit <%= singular_table_name.humanize.downcase %>
+</a>
+
+<hr>
+
 <dl>
 <% attributes.each do |attribute| -%>
   <dt><%= attribute.human_name %></dt>
@@ -22,12 +28,8 @@
 <%% end %>
 <% else -%>
 <% unless read_only? -%>
-<a href="/<%= plural_name %>/<%%= @<%= singular_table_name %>.id %>/edit" class="btn btn-default">
-  Edit
-</a>
-
 <a href="/delete_<%= singular_table_name %>/<%%= @<%= singular_table_name %>.id %>" class="btn btn-default">
-  Delete
+  Delete <%= singular_table_name.humanize.downcase %>
 </a>
 <% end -%>
 <% end -%>

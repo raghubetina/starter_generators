@@ -26,7 +26,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
 
 <% if named_routes? -%>
     if @<%= singular_name.underscore %>.save
-      redirect_to :back, :notice => "<%= singular_name.humanize %> created successfully."
+      redirect_back(:fallback_location => "/", :notice => "<%= singular_name.humanize %> created successfully.")
     else
       render("<%= plural_name.underscore %>/new.html.erb")
     end
@@ -79,7 +79,7 @@ class <%= plural_name.camelize %>Controller < ApplicationController
     if URI(request.referer).path == "/<%= plural_name.underscore %>/#{@<%= singular_name.underscore %>.id}"
       redirect_to("/", :notice => "<%= singular_name.humanize %> deleted.")
     else
-      redirect_to(:back, :notice => "<%= singular_name.humanize %> deleted.")
+      redirect_back(:fallback_location => "/", :notice => "<%= singular_name.humanize %> deleted.")
     end
   end
 end
